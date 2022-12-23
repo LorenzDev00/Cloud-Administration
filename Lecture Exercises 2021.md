@@ -141,5 +141,14 @@ Creare i seguenti alias command disponibili a tutti gli utenti del sistema:
  - "hwmp" comando *uname -mp*
 
 ```bash
+[root@class ~]# uname -mp
+x86_64 x86_64
+
+[root@class ~]# echo 'alias hwmp="uname -mp"' >> /etc/bashrc
+[root@class ~]# logout
+
+[root@class ~]# hwmp
+x86_64 x86_64
+
 
 ```
