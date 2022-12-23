@@ -150,5 +150,34 @@ x86_64 x86_64
 [root@class ~]# hwmp
 x86_64 x86_64
 
+```
+## Type 5 : Environment 27/08/2021
+Creare un nuovo script chiamato **hello** per l'utente student il cui compito sarà quello di stampare in output la stringa **"hello student"**
+
+ - Posizionare il vostro script sotto la directory **/exam/exercise5/bin**
+ - Modificare l'environment dell'utente student in modo da poeter richiamare il comando senza specificare il path **/exam/exercise5/bin/hello** *(la modifica dell'environment dovrà essere resa persistente al logiun dell'utente utente)*
+ - Non utilizzare **alias** command 
+
+```bash
+[student@class /]$ mkdir -p exam/exercise5/bin
+[student@class /]$ cd exam/exercise5/bin
+[student@class bin]$ vim hello
+[student@class bin]$ ls -la
+total 4
+drwxrwxrwx. 2 root    root    19 Dec 23 21:01 .
+drwxrwxrwx. 3 root    root    17 Dec 23 20:52 ..
+-rw-r--r--. 1 student student 34 Dec 23 21:01 hello
+
+# Inserire permessi di esecuzione 
+[student@class bin]$ chmod +x hello
+[student@class bin]$ ./hello
+hello student
+
+[student@class ~]$ vim .bashrc
+[student@class ~]$ logout
+[root@class /]# su - student
+[student@class ~]$ hello
+hello student
+
 
 ```
