@@ -43,37 +43,6 @@ function error {
 	exit ${EXIT_CODE}
 }
 
-# BLOCCO PRINCIPALE 
-if [ "$#" -lt "1" ];
-then
-	error "no paramater passed" 10
-elif [ "$#" -gt "5" ];
-then
-	error "#!/bin/bash
-
-# FUNZIONE CONTROLLO UTENTE INPUT
-function check_input () {
-if id "$user" &>/dev/null;
-then
-    echo "user [$user] found";
-    id $user;
-    chage -l $user;
-    grep $user /etc/passwd;
-    echo "- - - - - - - - - - - ";
-else
-    echo "user [$user] not found";
-    echo "- - - - - - - - - - - ";
-fi
-}
-
-# FUNZIONE GESTIONE ERRORE
-function error {
-        local ERROR=$1
-        local EXIT_CODE=$2
-        echo "${ERROR} - Usage: checkusername.sh $@";
-        exit ${EXIT_CODE}
-}
-
 # BLOCCO PRINCIPALE
 if [ "$#" -lt "1" ];
 then
@@ -87,14 +56,67 @@ else
                 check_input $user
         done
 fi
-too many parameters passed" 20
-	exit 20
+
+```
+# Esercizio 2 
+Create uno script bash chiamato index.sh con le seguenti caratteristiche:
+- accetti in ingresso
+  - una stringa di testo
+  - un comando per definire il comportamento dello script
+- Stringa di testo:
+  - lunghezza a piacere su un’unica riga
+- Comando
+  - append:
+      - se append: lo script andrà ad aggiungere la stringa di testo al file index.html 
+  - new
+      - se new: lo script andrà a sovrascrivere tutto il contenuto del file index.html con la stringa di testo passata in ingresso
+	
+Lo script dovrà prevedere il controllo:
+    - passato nessuno o un solo parametro lo script esca con exit code 1 e riporti il messaggio: Usage: index.sh “<string>” <append|new>
+    - Il messaggio di errore DEVE essere gestito tramite funzione
+```bash
+#!/bin/bash
+
+# FUNZIONE PER GESTIONE ERRORE
+function error {
+	local ERROR=$1
+	local EXIT_CODE=$2
+	echo "${ERROR} - Usage: index.sh $string - $com";
+	exit ${EXIT_CODE}
+}
+
+# FUNZIONE PER GESTIONE STRINGA
+function f1 (){  
+  printf "Select command:\n=> [append] to add extra string\n=> [new] to rewrite   the previous string\ncommand : ";
+  read com
+  
+if [ $com == "append" ]
+then 
+	echo "$string" >> index.html
+	echo "index.html status:";
+	cat index.html
+
+elif [ $com == "new" ]
+then 
+	echo "$string" > index.html
+	echo "index.html status: ";
+	cat index.html
 else
-	for user in "$@"
-	do
-		check_input $user
-	done
+	echo "Command not found";
 fi 
 
+
+}
+
+# BLOCCO PRINCIPALE
+echo "Please write a string of text : ";
+read string 
+
+if [ $(wc -w <<< $string ) -eq "0" ] || [ $(wc -w <<< $string) -eq "1" ]
+then 
+	error "Not enought words inserted" 1
+else
+  f1 $string
+fi
 
 ```
