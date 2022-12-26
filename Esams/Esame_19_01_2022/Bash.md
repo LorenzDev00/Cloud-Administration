@@ -1,3 +1,10 @@
+# Esercizio 1: Managing pipeline and regular expression
+```bash
+[student@class /]$ find /usr | grep [0-9] 1> exam/exercise1/find.txt 2> exam/exercise1/findErr.txt
+find: ‘/usr/share/polkit-1/rules.d’: Permission denied
+find: ‘/usr/share/empty.sshd’: Permission denied
+find: ‘/usr/libexec/initscripts/legacy-actions/auditd’: Permission denied
+```
 # Esercizio 3: Default file permission
 ```bush
 # Aggiungo utente
@@ -44,8 +51,5 @@ user: student - working directory: /root - home_directory: /home/student
 [root@class ~]# su alice
 [alice@class root]$ userinfo
 user: alice - working directory: /root - home_directory: /home/alice
-
-
-
 
 ```
