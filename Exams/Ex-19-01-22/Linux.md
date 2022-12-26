@@ -1,9 +1,36 @@
 # Esercizio 1: Managing pipeline and regular expression
 ```bash
-[student@class /]$ find /usr | grep [0-9] 1> exam/exercise1/find.txt 2> exam/exercise1/findErr.txt
-find: ‘/usr/share/polkit-1/rules.d’: Permission denied
-find: ‘/usr/share/empty.sshd’: Permission denied
-find: ‘/usr/libexec/initscripts/legacy-actions/auditd’: Permission denied
+[student@class /]$ find /usr 2> exam/exercise1/findErr.txt | grep [0-9] > exam/exercise1/find.txt
+```
+# Esercizio 2: Special file permission
+```bash
+[student@class /]$ mkdir exam/exercise2
+[student@class /]$ cd exam/exercise2
+
+[root@class exercise2]# groupadd collaboration
+[root@class exercise2]# chown -R  :collaboration /exam/exercise2
+
+# Imposto assegnazione gruppo alla creazione di un file 
+[root@class exercise2]# cd ..
+[root@class exam]# chmod g+s exercise2
+[root@class exam]# cd exercise2
+[root@class exercise2]# touch testfile1
+[root@class exercise2]# ls -ls
+total 0
+0 -rw-r--r--. 1 root collaboration 0 Dec 26 16:38 testfile1
+0 -rw-r--r--. 1 root root          0 Dec 26 16:37 textfile
+
+# Cambio utente 
+[root@class exercise2]# su student
+[student@class exercise2]$ touch studentTestFile
+[student@class exercise2]$ ls -la
+total 0
+drwxrwsr-x. 2 student collaboration  62 Dec 26 16:39 .
+drwxrwxrwx. 8 root    student       111 Dec 26 16:23 ..
+-rw-rw-r--. 1 student collaboration   0 Dec 26 16:39 studentTestFile
+-rw-r--r--. 1 root    collaboration   0 Dec 26 16:38 testfile1
+-rw-r--r--. 1 root    root            0 Dec 26 16:37 textfile
+
 ```
 # Esercizio 3: Default file permission
 ```bush
