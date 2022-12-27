@@ -1,3 +1,8 @@
+# Exercise 1: Managing pipeline, regular expression and command
+substitution
+```bash
+[student@class /]$ find /var 2>/exam/exercise1/error.txt | grep [abc] >/exam/exercise1/find.txt
+```
 # Exercise 2: Special file permission
 ```bash
 # Creo range di directories
