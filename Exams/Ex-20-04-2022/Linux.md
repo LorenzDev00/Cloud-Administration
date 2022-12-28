@@ -217,3 +217,88 @@ uid=3101(morini) gid=3015(morini) groups=3015(morini),10(wheel),100(users),2101(
 alias lsl="ls -lah"
 alias psuser="ps -U $USER"
 ```
+# Exercise 5: Systemd
+- Installare sul vostro sistema il servizio vsftpd
+- Il servizio deve essere attivo al boot della macchina
+```bash
+# Eseguibile : /exam/exercise5/Ex5service.sh
+#!/bin/bash
+
+echo "Starting Ex5Service";
+echo "Executing loop . . . ";
+for i in {1..5}
+do
+  echo "Step $i";
+done
+echo "Loop ends, Service off";
+sleep 1m
+
+# Servizio : /etc/systemd/system/Ex5service.service
+[Unit]
+Description=Example systemd service
+
+[Service]
+ExecStart=/bin/bash /exam/exercise5/Ex5service.sh
+
+[Install]
+WantedBy=multi-user.target
+
+# Avvio servizio
+[root@class ~]# systemctl start Ex5service.service
+[root@class ~]# systemctl status Ex5service.service
+● Ex5service.service - Example systemd service
+     Loaded: loaded (/etc/systemd/system/Ex5service.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2022-12-28 21:47:20 CET; 20s ago
+   Main PID: 6949 (bash)
+      Tasks: 2 (limit: 2331)
+     Memory: 580.0K
+        CPU: 15ms
+     CGroup: /system.slice/Ex5service.service
+             ├─6949 /bin/bash /exam/exercise5/Ex5service.sh
+             └─6950 sleep 1m
+
+Dec 28 21:47:20 class systemd[1]: Started Ex5service.service - Example systemd service.
+Dec 28 21:47:20 class bash[6949]: Starting Ex5Service
+Dec 28 21:47:20 class bash[6949]: Executing loop . . .
+Dec 28 21:47:20 class bash[6949]: Step 1
+Dec 28 21:47:20 class bash[6949]: Step 2
+Dec 28 21:47:20 class bash[6949]: Step 3
+Dec 28 21:47:20 class bash[6949]: Step 4
+Dec 28 21:47:20 class bash[6949]: Step 5
+Dec 28 21:47:20 class bash[6949]: Loop ends, Service off
+
+[root@class ~]# systemctl enable Ex5service.service
+
+[root@class ~]# reboot
+Connection to 127.0.0.1 closed by remote host.
+Connection to 127.0.0.1 closed.
+                                                                                                                                                                       
+root@127.0.0.1's password:
+root@127.0.0.1's password:
+X11 forwarding request failed on channel 0
+Web console: https://class:9090/ or https://10.0.2.15:9090/
+
+Last login: Wed Dec 28 21:45:47 2022 from 10.0.2.2
+
+[root@class ~]# systemctl status Ex5service.service
+● Ex5service.service - Example systemd service
+     Loaded: loaded (/etc/systemd/system/Ex5service.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2022-12-28 16:36:20 CET; 7h ago
+   Main PID: 669 (bash)
+      Tasks: 2 (limit: 2331)
+     Memory: 612.0K
+        CPU: 12ms
+     CGroup: /system.slice/Ex5service.service
+             ├─669 /bin/bash /exam/exercise5/Ex5service.sh
+             └─673 sleep 1m
+
+Dec 28 16:36:20 class systemd[1]: Started Ex5service.service - Example systemd service.
+Dec 28 16:36:21 class bash[669]: Starting Ex5Service
+Dec 28 16:36:21 class bash[669]: Executing loop . . .
+Dec 28 16:36:21 class bash[669]: Step 1
+Dec 28 16:36:21 class bash[669]: Step 2
+Dec 28 16:36:21 class bash[669]: Step 3
+Dec 28 16:36:21 class bash[669]: Step 4
+Dec 28 16:36:21 class bash[669]: Step 5
+Dec 28 16:36:21 class bash[669]: Loop ends, Service off
+```
