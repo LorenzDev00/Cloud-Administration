@@ -206,3 +206,13 @@ Number of days of warning before password expires       : 7
 [root@class ~]# id morini
 uid=3101(morini) gid=3015(morini) groups=3015(morini),10(wheel),100(users),2101(exam),31
 [root@class ~]#
+```
+# Exercise 4: alias command
+- Creare i seguenti aliases commands disponibili a tutti gli utenti del sistema:
+  - “lsl” comando: ls -lah
+- Creare un alias command disponibile a tutti gli utenti del sistema chiamato “psuser” il quale restituisca la lista di tutti i processi attivi del solo utente cheù lancia il comando.
+```bash
+# /etc/bashrc
+
+alias lsl="ls -lah"
+alias psuser="ps -U $USER"
