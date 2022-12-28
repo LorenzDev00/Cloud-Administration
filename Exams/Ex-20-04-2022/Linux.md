@@ -216,3 +216,4 @@ uid=3101(morini) gid=3015(morini) groups=3015(morini),10(wheel),100(users),2101(
 
 alias lsl="ls -lah"
 alias psuser="ps -U $USER"
+```
