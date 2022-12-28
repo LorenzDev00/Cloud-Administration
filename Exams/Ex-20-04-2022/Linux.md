@@ -1,4 +1,9 @@
 # Exercise 1: Managing Files with Shell Expansion and Command substitution
+- Creare sotto il path /exam/exercise1 le directory exercise1_directoryX con X compreso tra 1 e 5
+- all’interno di /exam/exercise1/exercise1_directoryX creare i files fileY_DATE.txt
+  -  con Y compreso tra 1 e 10
+  -  DATE la data di creazione file nel formato Y-m-d-H:M:S (date +%Y-%m-%d-%H:%M:%S)
+
 ```bash
 [root@class exercise1]# for i in {1..5}; do mkdir exercise1_directory"$i"; done
 [root@class exercise1]# for dir in */; do for i in {1..10}; do touch "$dir"file"$i"_$(date +"%Y-%m-%d-%H-%M-%S"); done; done
@@ -43,6 +48,8 @@ exercise1/
 │   └── file9_2022-12-27-21-47-24
 ```
 # Exercise 2: Special file permission
+- Creare una directory sotto /exam/exercise2 dove gli utenti che possono accedere al gruppo collaboration potranno condividere files
+- Tutti i file creati sotto la directory /exam/exercise2 dovranno essere assegnati automaticamente al gruppo collaboration
 ```bash
 # Aggiungo gruppo cooperation
 [root@class exercise2]# groupadd cooperation
@@ -95,3 +102,107 @@ drwxr-xr-x. 2 root    cooperation  4096 Dec 27 21:47 exercise1_directory5
 drwxr-xr-x. 2 root    cooperation  4096 Dec 27 21:47 RandomFiles
 -rw-r--r--. 1 root    cooperation     0 Dec 27 23:00 testfile1
 ```
+# Exercise 3: User and Group
+- Create due nuovi gruppi students e exam
+  - students con GID 2100
+  - exam con GID 2101
+- Creare gli utenti appartenenti al gruppo exam: rossi e morini
+  - l’utente rossi avrà le seguenti caratteristiche:
+    - UID 3100
+    - home directory /home/exam/rossi
+    - dovrà cambiare password al primo accesso
+    - dovrà poter accedere a file e directory appartenenti al gruppo students
+  - l’utente morini avrà le seguenti caratteristiche:
+    - UID 3101
+    - dovrà cambiare password al primo accesso e successivamente una volta al mese
+    - gruppi secondari users gamers e wheel
+    - utilizzare come shell di default sh al posto di bash
+```bash
+ #Aggiungo gruppi
+  308  groupadd students
+  309  groupadd exam
+ 
+ #Imposto GID pruppi
+  310  groupmod -g 2100 students
+  311  groupmod -g 2101 exam
+  
+ #Aggiungo utenti al gruppo exam
+  312  useradd rossi
+  313  useradd morini
+  
+  315  usermod -a -G exam rossi
+  316  usermod -a -G exam morini
+  317  id rossi
+  318  id morini
+  
+ #Modifico UID utenti
+  319  usermod -u 3100 rossi
+  320  usermod -u 3101 morini
+  321  id rossi
+  322  id morini
+
+#Modifico home direcotry rossi
+  324  usermod -d /home/exam/rossi rossi
+
+# Imposto paswd rossi e ne imposto il rinnovo al prossimo login
+[root@class ~]# passwd rossi
+Changing password for user rossi.
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+passwd: all authentication tokens updated successfully.
+
+[root@class ~]# passwd -e rossi
+Expiring password for user rossi.
+passwd: Success
+
+[alice@class root]$ su rossi
+Password:
+You are required to change your password immediately (administrator enforced).
+Current password:
+New password:
+Retype new password:
+bash-5.1$ su
+Password:
+
+# Aggiungo rossi al gruppo students
+[root@class ~]# usermod -a -G students rossi
+
+# Imposo paswd morini
+[root@class ~]# passwd morini
+Changing password for user morini.
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+passwd: all authentication tokens updated successfully.
+
+# Imposto rinnovo paswd al prossimo login
+[root@class ~]# passwd -e morini
+Expiring password for user morini.
+passwd: Success
+
+# Imposto scadenza paswd ogni mese
+[root@class ~]# passwd -x 30 morini
+Adjusting aging data for user morini.
+passwd: Success
+[root@class ~]# su alice
+[alice@class root]$ su morini
+Password:
+You are required to change your password immediately (administrator enforced).
+Current password:
+New password:
+Retype new password:
+[morini@class root]$ chage -l morini
+Last password change                                    : Dec 28, 2022
+Password expires                                        : Jan 27, 2023
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 30
+Number of days of warning before password expires       : 7
+
+# Aggiungo morini ai gruppi
+[root@class ~]# usermod -a -G users,gamers,wheel morini
+[root@class ~]# id morini
+uid=3101(morini) gid=3015(morini) groups=3015(morini),10(wheel),100(users),2101(exam),31
+[root@class ~]#
