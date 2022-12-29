@@ -1,3 +1,24 @@
+# Exercise 1: Managing pipeline and regular expression
+- Utilizzare il comando find e grep, per trovare tutti i files e directories sotto il path /usr che contengono il pattern “ab” “ac” “af” “bb” “bc” “bf” nel nome.
+- Riportare il comando utilizzato sotto /exam/exercise1/regex.txt.
+```bash
+[root@class exercise1]# find /usr | grep -e ab -e ac -e af -e bb -e bc -e bf
+
+/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache
+/usr/libexec/abrt-gdb-exploitable
+/usr/libexec/packagekit-direct
+/usr/libexec/packagekitd
+/usr/libexec/cockpit-wsinstance-factory
+/usr/libexec/psacct
+/usr/libexec/psacct/accton-create
+/usr/libexec/man-db/globbing
+/usr/local/share/applications/mimeinfo.cache
+...
+
+[root@class exercise1]# echo "find /usr | grep -e "ab" -e "ac" -e "af" -e "bb" -e "bc" -e "bf"" > regex.txt
+
+```
+
 # Exercise 2: Shell environment and alias command
 - Creare un nuovo comando o alias command chiamato userinfo disponibile al login per TUTTI gli utenti del sistema.
 - Chiamato dovrà stampare la seguente stringa user: <username> - working directory: <print working directory> - home_directory: /home/directory
