@@ -93,14 +93,92 @@ drwxr-xr-x.  3 root root     22 Dec 29 15:23 .
 drwxrwxrwx. 10 root student 169 Dec 29 15:23 ..
 drwxr-xr-x.  2 root root      6 Dec 29 15:23 students
 
-[root@class exercise3.1]# chgrp students students/
-[root@class exercise3.1]# ls -la
-total 0
-drwxr-xr-x.  3 root root      22 Dec 29 15:23 .
-drwxrwxrwx. 10 root student  169 Dec 29 15:23 ..
-drwxr-xr-x.  2 root students   6 Dec 29 15:23 students
+[root@class exam]# chown -R :students /exam/
+[root@class exam]# ls -la
+total 12
+drwxrwxrwx. 11 root    students 4096 Dec 29 16:40 .
+dr-xr-xr-x. 19 root    root      247 Dec 23 20:52 ..
+drwxr-xr-x.  2 root    students   64 Dec 26 14:31 BashExercise
+-rwxr-xr-x.  1 root    students   79 Dec 28 18:37 BashService.sh
+drwxrwsr-x.  8 student students 4096 Dec 29 14:34 exercise1
+drwxr-sr-x.  3 root    students   87 Dec 27 22:46 exercise2
+drwxrwxr-x.  2 exam2   students   39 Dec 29 15:12 exercise3
+drwxr-sr-x.  3 root    students   38 Dec 29 16:38 exercise3.1
+drwxr-xr-x.  2 root    students    6 Dec 26 15:29 exercise4
+drwxrwxrwx.  3 root    students   84 Dec 29 15:04 exercise5
+drwxr-xr-x.  2 root    students  125 Dec 28 12:19 exercise6
+drwxrwxr-x.  2 mark    students    6 Dec 29 16:04 mark
 
-#Aggiungo utenti
+# Aggiungo utenti
 [root@class exercise3.1]# useradd mark
 [root@class exercise3.1]# useradd martin
 [root@class exercise3.1]# useradd nadine
+
+# Aggiungo utenti al gruppo
+
+  578   usermod -a -G students mark
+  579   usermod -a -G students martin
+  580   usermod -a -G students nadine
+  
+[root@class exercise3.1]# for i in {mark,martin,nadine}; do id $i; done
+uid=3105(mark) gid=3107(mark) groups=3107(mark),2100(students)
+uid=3106(martin) gid=3108(martin) groups=3108(martin),2100(students)
+uid=3107(nadine) gid=3109(nadine) groups=3109(nadine),2100(students)
+[root@class exercise3.1]#
+
+# Imposto file creati in students come appartenenti automaticamente al gruppo students
+[root@class exam]# cd exercise3.1
+[root@class exercise3.1]# chmod g+s students/
+
+# Aggiungo permessi ai soli membri del gruppo students per modificare la dir students
+[root@class exercise3.1]# chmod 770 students/
+[root@class exercise3.1]# su mark
+[mark@class exercise3.1]$ cd students/
+[mark@class students]$ ls -la
+total 0
+drwxrws---. 2 root students 52 Dec 29 16:55 .
+drwxr-sr-x. 3 root students 38 Dec 29 16:38 ..
+-rw-rw-r--. 1 mark students  0 Dec 29 16:55 prova
+-rw-r--r--. 1 root students  0 Dec 29 16:39 rootfile
+-rw-r--r--. 1 root students  0 Dec 29 16:39 rootfile1
+
+# L'utente alice non può accedere perchè non è parte del gruppo
+[root@class exercise3.1]# su alice
+[alice@class exercise3.1]$ cd students/
+bash: cd: students/: Permission denied
+
+# Gli tuenti membri di students possono aggiungere e modificare files 
+[nadine@class students]$ touch nadinefile
+[nadine@class students]$ ls -la
+total 0
+drwxrws---. 2 root   students 70 Dec 29 18:34 .
+drwxr-sr-x. 3 root   students 38 Dec 29 16:38 ..
+-rw-rw-r--. 1 nadine students  0 Dec 29 18:34 nadinefile
+-rw-rw-r--. 1 mark   students  0 Dec 29 17:03 prova
+-rw-r--r--. 1 root   students  0 Dec 29 16:39 rootfile
+-rw-r--r--. 1 root   students  0 Dec 29 16:39 rootfile1
+[nadine@class students]$ touch prova
+[nadine@class students]$ ls -la
+total 0
+drwxrws---. 2 root   students 70 Dec 29 18:34 .
+drwxr-sr-x. 3 root   students 38 Dec 29 16:38 ..
+-rw-rw-r--. 1 nadine students  0 Dec 29 18:34 nadinefile
+-rw-rw-r--. 1 mark   students  0 Dec 29 18:35 prova
+-rw-r--r--. 1 root   students  0 Dec 29 16:39 rootfile
+-rw-r--r--. 1 root   students  0 Dec 29 16:39 rootfile1
+[nadine@class students]$ exit
+exit
+[root@class exercise3.1]# su martin
+[martin@class exercise3.1]$ cd students/
+[martin@class students]$ touch martinfile
+[martin@class students]$ ls -la
+total 0
+drwxrws---. 2 root   students 88 Dec 29 18:35 .
+drwxr-sr-x. 3 root   students 38 Dec 29 16:38 ..
+-rw-rw-r--. 1 martin students  0 Dec 29 18:35 martinfile
+-rw-rw-r--. 1 nadine students  0 Dec 29 18:34 nadinefile
+-rw-rw-r--. 1 mark   students  0 Dec 29 18:35 prova
+-rw-r--r--. 1 root   students  0 Dec 29 16:39 rootfile
+-rw-r--r--. 1 root   students  0 Dec 29 16:39 rootfile1
+
+
