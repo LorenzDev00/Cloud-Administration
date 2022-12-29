@@ -76,3 +76,31 @@ drwxrwxr-x. 2 exam2 exam2    39 Dec 29 15:12 .
 drwxrwxrwx. 9 root  student 150 Dec 28 17:54 ..
 -rw-------. 1 bill  bill      0 Dec 29 15:12 billfile
 ```
+# Exercise 2: Special file permission and users
+- Creare una directory sotto /exam/exercise3/students dove gli utenti del gruppo students, mark nadine e martin potranno condividere files
+- Solamente gli utenti del gruppo students potranno creare e cancellare i file sotto /exam/exercise3/students
+- Tutti i file creati sotto la directory /exam/exercise3/students dovranno essere assegnati automaticamente al gruppo students
+```bash
+# Creo directory
+[root@class exam]# mkdir exercise3.1
+[root@class exam]# cd exercise3.1
+[root@class exercise3.1]# mkdir students
+[root@class exercise3.1]# cd ..
+[root@class exam]# cd exercise3.1
+[root@class exercise3.1]# ls -la
+total 0
+drwxr-xr-x.  3 root root     22 Dec 29 15:23 .
+drwxrwxrwx. 10 root student 169 Dec 29 15:23 ..
+drwxr-xr-x.  2 root root      6 Dec 29 15:23 students
+
+[root@class exercise3.1]# chgrp students students/
+[root@class exercise3.1]# ls -la
+total 0
+drwxr-xr-x.  3 root root      22 Dec 29 15:23 .
+drwxrwxrwx. 10 root student  169 Dec 29 15:23 ..
+drwxr-xr-x.  2 root students   6 Dec 29 15:23 students
+
+#Aggiungo utenti
+[root@class exercise3.1]# useradd mark
+[root@class exercise3.1]# useradd martin
+[root@class exercise3.1]# useradd nadine
