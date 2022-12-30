@@ -1,0 +1,14 @@
+# Exercise 7: Docker
+- La directory /exam/exercise7 dovrà contenere i files:
+  - Dockerfile
+  - start_application.sh
+  - docker-compose.yml
+- Dockerfile conterrà le istruzioni per la creazione della immagine Docker basata su fedora:lates con installato il servizio HTTPD e il servizio NGINX
+- entrypoint.sh sarà lo script chiamato come ENTRYPOINT dalla immagine Docker, il cui compito è quello di andare ad attivare il processo HTTPD o il processo NGINX a seconda del valore riportato dalla variabile di ambiente SERVICE
+  - se SERVICE=HTTPD allora dovrà essere attivato il processo httpd
+  - se SERVICE=NGINX allora dovrà essere attivato il processo nginx
+- docker-compose.yml verrà utilizzato per effettuare la build automatica della immagine (se non presente), per lanciare l’immagine Docker, per passare la variabile di ambiente SERVICE, per attivare port binding tra il vostro sistema di esame e la porta del servizio HTTP/NGINX presente sul container.
+- NGINX:
+  - porta di default è la porta 80 come per httpd
+  - Per installare nginx potete utilizzare i repository configurati sul vostro sistema, così come fareste per installare httpd, quindi non è necessario cercare metodologie alternative.
+  - Per attivare il servizio nginx (mai lanciato direttamente durante i laboratori proposti durante l’anno) in foreground utilizzare il comando nginx -g, "daemon off;"
